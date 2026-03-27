@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --newton-blue-dark: #002b56;
+  --newton-blue-light: #009bd0;
+  --newton-blue-mid: #4382c3;
+  --newton-yellow: #f7a400;
+  --newton-orange: #ef7918;
+  --newton-red: #e94734;
+  --newton-gray-9: #414042;
+  --newton-gray-7: #6d6e71;
+  --newton-gray-3: #bcbec0;
+  --newton-gray-1: #e6e7e8;
+  --newton-warm-gradient: linear-gradient(135deg, #e94734 0%, #ef7918 52%, #f7a400 100%);
+  --newton-cool-gradient: linear-gradient(135deg, #009bd0 0%, #4382c3 100%);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(247, 164, 0, 0.16), transparent 24%),
+    radial-gradient(circle at top right, rgba(0, 155, 208, 0.14), transparent 24%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbfd 38%, #f4f6f8 100%);
+  color: var(--newton-gray-9);
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+  @apply min-h-screen antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(247, 164, 0, 0.35);
+  color: var(--newton-blue-dark);
+}
+
+.font-roboto {
+  font-family: Roboto, Arial, Helvetica, sans-serif;
+}
