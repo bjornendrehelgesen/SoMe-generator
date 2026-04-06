@@ -1,6 +1,10 @@
 import OpenAI from "openai";
 
-import { buildSingleFieldPrompt, buildUserPrompt, getSystemPrompt } from "@/lib/prompt";
+import {
+  buildSingleFieldPrompt,
+  buildUserPrompt,
+  resolveSystemPrompt
+} from "@/lib/prompt";
 import { normalizeRewriteResult } from "@/lib/validation";
 import type { RewriteField, RewriteResult } from "@/types/rewrite";
 
@@ -32,15 +36,19 @@ function extractJson(content: string): unknown {
   }
 }
 
-export async function generateRewriteSuggestions(text: string): Promise<RewriteResult> {
+export async function generateRewriteSuggestions(
+  text: string,
+  customPrompt?: string
+): Promise<RewriteResult> {
   const client = getClient();
+  const systemPrompt = resolveSystemPrompt(customPrompt);
 
   const response = await client.responses.create({
     model: MODEL,
     input: [
       {
         role: "system",
-        content: [{ type: "input_text", text: getSystemPrompt() }]
+        content: [{ type: "input_text", text: systemPrompt }]
       },
       {
         role: "user",
@@ -61,16 +69,18 @@ export async function generateRewriteSuggestions(text: string): Promise<RewriteR
 export async function regenerateRewriteField(
   text: string,
   target: RewriteField,
-  currentResults: RewriteResult
+  currentResults: RewriteResult,
+  customPrompt?: string
 ): Promise<RewriteResult> {
   const client = getClient();
+  const systemPrompt = resolveSystemPrompt(customPrompt);
 
   const response = await client.responses.create({
     model: MODEL,
     input: [
       {
         role: "system",
-        content: [{ type: "input_text", text: getSystemPrompt() }]
+        content: [{ type: "input_text", text: systemPrompt }]
       },
       {
         role: "user",

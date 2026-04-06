@@ -28,6 +28,10 @@ export function getSystemPrompt(): string {
   return SYSTEM_PROMPT;
 }
 
+export function getDefaultPromptTemplate(): string {
+  return SYSTEM_PROMPT;
+}
+
 export function buildUserPrompt(text: string): string {
   return `Omformuler denne teksten til strukturert JSON etter reglene over:\n\n${text.trim()}`;
 }
@@ -62,4 +66,14 @@ export function buildSingleFieldPrompt(text: string, target: RewriteField): stri
     "",
     text.trim()
   ].join("\n");
+}
+
+export function resolveSystemPrompt(customPrompt?: string): string {
+  const trimmed = customPrompt?.trim();
+
+  if (!trimmed) {
+    return getSystemPrompt();
+  }
+
+  return trimmed;
 }

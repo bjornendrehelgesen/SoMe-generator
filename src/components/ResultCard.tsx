@@ -140,7 +140,7 @@ export function ResultCard({
       <div className={`${contentPadding} whitespace-pre-wrap rounded-[1.25rem] border border-[#EEF1F4] bg-white/98 text-sm text-[#414042] shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]`}>
         {content || "Ingen tekst tilgjengelig."}
       </div>
-      <div className={`mt-3 flex flex-wrap items-center gap-2 ${isCompact ? "justify-start" : "justify-end"}`}>
+      <div className={`mt-auto pt-3 flex flex-wrap items-center gap-2 ${isCompact ? "justify-start" : "justify-end"}`}>
         {showUndo ? (
           <div className="group relative">
             <button

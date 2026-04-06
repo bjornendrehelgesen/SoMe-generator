@@ -1,376 +1,223 @@
-PRD / FDS – Nettside for AI-omformulering av SoMe-tekster
+PRD / FDS – AI-omformulering for Newton-rommet
 
 1. Dokumentinformasjon
 
 Prosjektnavn: AI-omformuleringsverktøy for Newton-rommet
 Dokumenttype: PRD / FDS
-Versjon: 1.0
-Status: Utkast
+Versjon: 2.0
+Status: Aktiv
 Språk: Norsk bokmål
 
 ⸻
 
-2. Bakgrunn
+2. Produktretning
 
-Newton-rommet produserer innhold til flere sosiale medier, men samme budskap må ofte tilpasses ulike plattformer. Dette tar tid og gjør det lett å få ujevn tone, lengde og kvalitet.
+Løsningen er ikke lenger kun en enkel MVP-generator. Fase 2 utvider produktet med:
+	•	innlogging og egne brukerkontoer
+	•	personlig historikk for alle genereringer
+	•	promptredigering per kjøring
+	•	lagring og deling av prompts
+	•	adminflate for brukere og prompts
 
-Det er behov for en enkel nettside der brukeren kan skrive inn eller lime inn en grunntekst og få tre ferdige forslag tilpasset:
-	•	Facebook
-	•	Instagram
-	•	LinkedIn
-
-Løsningen skal bruke AI til å omformulere teksten slik at den blir klar til publisering med riktig tone, riktig lengde og en ryddig struktur.
-
-⸻
-
-3. Formål
-
-Målet er å lage en enkel og effektiv nettside som gjør det mulig å:
-	•	skrive inn én grunntekst
-	•	få tre plattformtilpassede versjoner automatisk
-	•	kopiere hver versjon separat
-	•	spare tid i produksjon av innhold til sosiale medier
-	•	sikre bedre og mer konsekvent språkføring for Newton-rommet
+Målet er fortsatt å gjøre det raskt å lage gode SoMe-forslag, men nå med mer kontroll, gjenbruk og administrasjon.
 
 ⸻
 
-4. Målgruppe
+3. Målgruppe
 
 Primærmålgruppe
 	•	ansatte i Newton-rommet
 	•	kommunikasjonsansvarlige
-	•	lærere eller formidlere som publiserer innhold i sosiale medier
+	•	formidlere og lærere som publiserer i sosiale medier
 
 Sekundærmålgruppe
-	•	andre som lager formidlingsinnhold om undervisning, teknologi, realfag eller arrangementer
+	•	andre innholdsprodusenter som jobber med realfag, læring eller arrangementer
 
 ⸻
 
-5. Problem som skal løses
+4. Viktigste brukerbehov
 
-Dagens arbeidsmåte innebærer ofte at én tekst må omskrives manuelt flere ganger. Dette gir følgende utfordringer:
-	•	unødvendig tidsbruk
-	•	ujevn kvalitet mellom kanaler
-	•	uklare forskjeller mellom profesjonell og folkelig tone
-	•	ekstra arbeid med å formulere korte bildetekster og CTA-er
+Brukerne skal kunne:
+	•	logge inn og jobbe med egne forslag
+	•	gå tilbake til tidligere genereringer
+	•	tilpasse AI-prompten til egne behov
+	•	lagre prompts for senere bruk
+	•	dele gode prompts med andre brukere
 
-Løsningen skal redusere dette ved å standardisere og automatisere førsteutkastene.
-
-⸻
-
-6. Produktmål
-
-Løsningen skal:
-	1.	gjøre det raskt å få gode SoMe-forslag fra én originaltekst
-	2.	gi tydelig kanaltilpassede versjoner
-	3.	fungere godt både på mobil og desktop
-	4.	være så enkel at en ny bruker forstår den uten opplæring
-	5.	gi resultater som er klare til bruk eller krever minimal redigering
+Administratorer skal kunne:
+	•	se og administrere brukere
+	•	endre roller
+	•	deaktivere kontoer
+	•	moderere, skjule eller slette delte prompts
 
 ⸻
 
-7. Omfang
+5. Omfang
 
-Inkludert i MVP
-	•	én side med tekstfelt for input
-	•	knapp for å generere forslag
-	•	tre separate resultatfelt for Facebook, Instagram og LinkedIn
-	•	valgfritt felt for kort tekst til bilde
-	•	valgfritt felt for CTA
-	•	kopieringsknapp per resultatfelt
-	•	enkel feilhåndtering
-	•	responsivt design
-	•	bruk av fast AI-prompt i backend
+Inkludert i fase 2
+	•	registrering og innlogging med e-post og passord
+	•	rollemodell med minst `user` og `admin`
+	•	full historikk per bruker
+	•	redigering av hele prompten i genereringsflyten
+	•	lagring av private og offentlige prompts
+	•	delt promptbibliotek for innloggede brukere
+	•	adminside for bruker- og promptadministrasjon
 
-Ikke inkludert i MVP
-	•	innlogging og brukeradministrasjon
-	•	lagring av historikk
-	•	flerspråklig støtte
-	•	direkte publisering til sosiale medier
-	•	bildeopplasting eller bildeanalyse
-	•	avansert redigering av AI-prompt i brukergrensesnittet
-	•	analyse av resultatkvalitet over tid
+Ikke inkludert i fase 2
+	•	SSO mot eksterne identitetsleverandører
+	•	offentlig deling uten innlogging
+	•	avansert analyse/statistikk
+	•	versjonering av prompts
+	•	rettighetsstyring utover `user` og `admin`
 
 ⸻
 
-8. Brukerhistorier
+6. Brukerhistorier
 
 US1
 
-Som innholdsansvarlig vil jeg kunne lime inn en tekst og få tre kanaltilpassede versjoner, slik at jeg sparer tid.
+Som bruker vil jeg kunne registrere meg og logge inn, slik at jeg får tilgang til egne data.
 
 US2
 
-Som bruker vil jeg kunne kopiere Facebook-, Instagram- eller LinkedIn-teksten hver for seg, slik at jeg enkelt kan publisere riktig versjon i riktig kanal.
+Som bruker vil jeg kunne se alle tidligere genereringer, slik at jeg kan gå tilbake til tidligere arbeid.
 
 US3
 
-Som bruker vil jeg få en tydelig feilmelding hvis jeg prøver å sende inn en tom tekst, slik at jeg forstår hva som mangler.
+Som bruker vil jeg kunne redigere hele prompten før generering, slik at jeg får mer kontroll på resultatet.
 
 US4
 
-Som bruker vil jeg at teksten skal være skrevet på godt norsk bokmål og være klar til publisering, slik at jeg slipper mye etterarbeid.
+Som bruker vil jeg kunne lagre en prompt som privat eller offentlig, slik at jeg kan gjenbruke den selv eller dele den med andre.
 
 US5
 
-Som bruker vil jeg gjerne få forslag til kort bildetekst og CTA når det passer, slik at innlegget blir mer komplett.
+Som bruker vil jeg kunne laste inn en delt prompt og bruke den som utgangspunkt i generatoren.
+
+US6
+
+Som admin vil jeg kunne administrere brukere, roller og kontostatus.
+
+US7
+
+Som admin vil jeg kunne skjule eller slette prompts som ikke bør være tilgjengelige for andre.
 
 ⸻
 
-9. Funksjonelle krav
+7. Funksjonelle krav
 
-FR1 – Inputfelt
+FR1 – Brukerkontoer
 
-Systemet skal ha et stort tekstfelt der brukeren kan skrive inn eller lime inn tekst.
+Systemet skal støtte registrering, innlogging og utlogging.
 
-FR2 – Genereringsknapp
+FR2 – Tilgangskontroll
 
-Systemet skal ha en tydelig knapp for å sende teksten til AI for behandling.
+Beskyttede sider og API-er skal kreve autentisert bruker.
 
-FR3 – Validering av input
+FR3 – Roller
 
-Systemet skal kontrollere at brukeren har skrevet inn tekst før forespørselen sendes.
+Systemet skal støtte minst rollene `user` og `admin`.
 
-FR4 – AI-omformulering
+FR4 – Historikk
 
-Systemet skal sende brukerens tekst til backend, der en fast prompt kombineres med input og sendes videre til en språkmodell.
+Hver generering skal lagres med:
+	•	inputtekst
+	•	full prompt
+	•	resultatobjekt
+	•	bruker-id
+	•	tidsstempel
 
-FR5 – Kanalspesifikke resultater
+FR5 – Historikkvisning
 
-Systemet skal vise tre separate tekstresultater:
-	•	Facebook
-	•	Instagram
-	•	LinkedIn
+Bruker skal kunne se listevisning og detaljvisning av egen historikk.
 
-FR6 – Ekstra forslag
+FR6 – Promptredigering
 
-Systemet skal kunne vise:
-	•	kort tekst til bilde
-	•	CTA
+Bruker skal kunne redigere hele prompten i UI før generering.
 
-Disse feltene kan være tomme dersom AI-en vurderer at det ikke passer.
+FR7 – Standardprompt
 
-FR7 – Kopieringsfunksjon
+Systemet skal fortsatt tilby en standardprompt som utgangspunkt.
 
-Hvert resultatfelt skal ha en knapp som kopierer innholdet til utklippstavlen.
+FR8 – Promptlagring
 
-FR8 – Lasteindikator
+Bruker skal kunne lagre prompt som privat eller offentlig.
 
-Systemet skal vise at behandling pågår etter at brukeren trykker på genereringsknappen.
+FR9 – Delt promptbibliotek
 
-FR9 – Feilmeldinger
+Innloggede brukere skal kunne se og bruke offentlige prompts.
 
-Systemet skal vise en forståelig feilmelding ved:
-	•	tom input
-	•	feil fra backend
-	•	feil fra AI-tjenesten
-	•	ugyldig eller mangelfull respons
+FR10 – Admin brukeradministrasjon
 
-FR10 – Strukturert resultat
+Admin skal kunne:
+	•	se alle brukere
+	•	endre rolle
+	•	deaktivere kontoer
 
-Frontend skal motta og vise strukturert data fra backend i faste felter.
+FR11 – Admin promptadministrasjon
 
-FR11 – Responsivt grensesnitt
+Admin skal kunne:
+	•	se alle prompts
+	•	endre synlighet/status
+	•	slette prompts
 
-Løsningen skal fungere på mobil, nettbrett og desktop.
+FR12 – AI-generering
+
+Systemet skal fortsatt returnere strukturert resultat i formatet:
+
+{
+  "facebook": "...",
+  "instagram": "...",
+  "linkedin": "...",
+  "imageText": "...",
+  "cta": "..."
+}
 
 ⸻
 
-10. Ikke-funksjonelle krav
+8. Ikke-funksjonelle krav
 
-NFR1 – Brukervennlighet
+NFR1 – Sikkerhet
 
-Brukeren skal forstå hvordan løsningen brukes i løpet av få sekunder.
+API-nøkler og hemmeligheter skal fortsatt holdes i backend.
 
-NFR2 – Ytelse
+NFR2 – Dataskille
 
-Systemet bør normalt returnere svar innen 10 sekunder ved vanlig bruk.
+Vanlig bruker skal kun ha tilgang til egen historikk og egne private prompts.
 
-NFR3 – Sikkerhet
+NFR3 – Administrasjon
 
-API-nøkler og hemmelig konfigurasjon skal ikke eksponeres i frontend.
+Adminfunksjoner skal være eksplisitt rollebeskyttet.
 
 NFR4 – Vedlikeholdbarhet
 
-Løsningen skal bygges med ryddig struktur og være enkel å videreutvikle.
+Løsningen skal bygges med tydelige typer, små komponenter og enkel struktur.
 
-NFR5 – Stabilitet
+NFR5 – Robusthet
 
-Systemet skal håndtere vanlige feil uten at brukergrensesnittet bryter sammen.
-
-NFR6 – Språkkvalitet
-
-Resultatene skal være på norsk bokmål og ha naturlig flyt.
+Systemet skal håndtere ugyldig innlogging, ugyldige API-kall og manglende tilgang på en kontrollert måte.
 
 ⸻
 
-11. Innholdskrav til AI-resultatet
+9. Sikkerhetsprinsipper
 
-AI-resultatene skal følge disse prinsippene:
-	•	teksten skal være på norsk bokmål
-	•	budskapet fra originalteksten skal bevares
-	•	AI skal ikke finne opp fakta
-	•	Facebook-teksten skal være litt lengre, engasjerende og folkelig
-	•	Instagram-teksten skal være kortere, mer punchy og kan bruke noen relevante emojis
-	•	LinkedIn-teksten skal være mer profesjonell og faglig
-	•	emojis skal brukes med måte
-	•	tonen skal være tydelig, men ikke masete
-	•	teksten skal være klar til publisering
+Følgende prinsipper gjelder fortsatt:
+	•	OpenAI-nøkkel skal ikke eksponeres i frontend
+	•	prompten sendes alltid via backend til AI-modellen
+	•	sessions skal være serverkontrollerte
+	•	admin-tilganger skal ikke styres kun i UI
+
+Fri promptredigering er en avansert funksjon og må derfor behandles som brukerinnhold med tydelig validering og server-side kontroll.
 
 ⸻
 
-12. Forventet AI-format
+10. Akseptansekriterier
 
-Backend skal be AI-modellen returnere et strukturert svar i JSON-format.
-
-Eksempel:
-
-{
-  "facebook": "...",
-  "instagram": "...",
-  "linkedin": "...",
-  "imageText": "...",
-  "cta": "..."
-}
-
-Hvis imageText eller cta ikke passer, skal feltet returneres som tom streng.
-
-⸻
-
-13. Brukerflyt
-
-Hovedflyt
-	1.	Brukeren åpner nettsiden.
-	2.	Brukeren skriver inn eller limer inn en tekst i inputfeltet.
-	3.	Brukeren klikker på «Lag forslag».
-	4.	Systemet validerer at input ikke er tom.
-	5.	Frontend sender teksten til backend.
-	6.	Backend kombinerer teksten med fast systemprompt.
-	7.	Backend sender forespørselen til AI-modellen.
-	8.	Backend mottar strukturert svar.
-	9.	Frontend viser resultatene i egne kort.
-	10.	Brukeren kan kopiere hvert forslag separat.
-
-Feilflyt
-	1.	Brukeren sender tom tekst.
-	2.	Systemet stopper forespørselen.
-	3.	Brukeren får feilmelding.
-
-Eller:
-	1.	Backend eller AI-tjeneste feiler.
-	2.	Frontend viser en tydelig generell feilmelding.
-	3.	Brukeren kan prøve igjen.
-
-⸻
-
-14. UI-krav
-
-Hovedsiden skal minst inneholde:
-	•	tydelig sidetittel
-	•	kort forklarende tekst
-	•	stort tekstfelt
-	•	knapp for generering
-	•	eventuelt knapp for å tømme input
-	•	resultatkort for:
-	•	Facebook
-	•	Instagram
-	•	LinkedIn
-	•	kort tekst til bilde
-	•	CTA
-	•	kopier-knapp på hvert kort
-	•	tilbakemelding ved vellykket kopiering
-	•	synlig lasteindikator
-	•	synlige feilmeldinger
-
-Designet skal være enkelt, moderne og uten unødvendige elementer.
-
-⸻
-
-15. Akseptansekriterier
-
-Løsningen er godkjent når følgende er oppfylt:
-	1.	Brukeren kan skrive inn en tekst og få tre forslag.
-	2.	Forslagene er tydelig skilt mellom Facebook, Instagram og LinkedIn.
-	3.	Hver tekst kan kopieres separat.
-	4.	Inputfeltet valideres før innsending.
-	5.	Brukeren får en forståelig feilmelding ved feil.
-	6.	Løsningen fungerer godt på mobil og desktop.
-	7.	AI-resultatene følger ønsket språk og kanaltilpasning.
-	8.	API-nøkkel er ikke eksponert i frontend.
-
-⸻
-
-16. Måleparametere
-
-Følgende kan brukes for å vurdere om løsningen fungerer godt:
-	•	tid spart per publisering
-	•	hvor ofte brukeren tar i bruk forslagene uten større redigering
-	•	brukeropplevd kvalitet på tekstene
-	•	andel vellykkede genereringer
-	•	gjennomsnittlig svartid
-
-⸻
-
-17. Risikoer og avgrensninger
-
-Risikoer
-	•	AI kan formulere seg litt for generelt
-	•	AI kan gi ujevne resultater hvis originalteksten er veldig kort eller uklar
-	•	AI kan av og til returnere format som ikke matcher forventet JSON
-	•	svartid kan variere avhengig av AI-leverandør
-
-Tiltak
-	•	bruke tydelig systemprompt
-	•	validere og eventuelt parse responsen i backend
-	•	gi brukeren tydelige feilmeldinger
-	•	teste med realistiske eksempler fra Newton-rommet
-
-⸻
-
-18. Fremtidige utvidelser
-
-Mulige forbedringer etter MVP:
-	•	valg mellom flere tone-of-voice-profiler
-	•	støtte for hashtags
-	•	lagring av tidligere forslag
-	•	redigering av prompt via adminvisning
-	•	flere kanaler, som TikTok eller nyhetsbrev
-	•	mulighet for å legge inn målgruppe eller kampanjemål
-	•	direkte eksport eller integrasjon med publiseringsverktøy
-
-⸻
-
-19. Foreslått systemprompt
-
-Du er en norsk innholdsassistent som hjelper Newton-rommet med å omformulere tekster til sosiale medier.
-
-Newton-rommet driver undervisning innen realfag og teknologi for elever.
-
-Når brukeren gir deg en tekst eller et utgangspunkt, skal du lage tre versjoner av teksten:
-1. Facebook – litt lengre, engasjerende og folkelig tone
-2. Instagram – kortere, mer punchy, gjerne med emojis
-3. LinkedIn – mer profesjonell og faglig tone
-
-Krav:
-- Skriv på norsk bokmål
-- Tekstene skal ha naturlig flyt og være klare til publisering
-- Bruk relevante emojis på Facebook og Instagram når det passer, men ikke overdriv
-- Ha en tydelig, men ikke masete formidling
-- Behold meningen i originalteksten, men gjør språket bedre og plattformtilpasset
-- Ikke finn opp fakta som ikke finnes i originalteksten
-- Hvis informasjon mangler, skriv nøkternt og generelt
-
-Når det passer, foreslå også:
-- En kort tekst til bilde
-- En enkel call-to-action
-
-Svar alltid i gyldig JSON med disse feltene:
-{
-  "facebook": "...",
-  "instagram": "...",
-  "linkedin": "...",
-  "imageText": "...",
-  "cta": "..."
-}
-
-Hvis kort tekst til bilde eller CTA ikke passer, returner tom streng i feltet.
+Fase 2 regnes som levert når:
+	•	ny bruker kan registrere seg og logge inn
+	•	innlogget bruker kan generere forslag og få dem lagret i historikken
+	•	bruker kan åpne tidligere historikkposter
+	•	bruker kan skrive egen prompt og bruke den i genereringen
+	•	bruker kan lagre privat eller offentlig prompt
+	•	offentlige prompts kan brukes av andre innloggede brukere
+	•	admin kan administrere brukere og prompts

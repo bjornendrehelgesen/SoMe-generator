@@ -4,7 +4,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "AI-omformulering for Newton-rommet",
-  description: "Lag kanaltilpassede SoMe-forslag fra én grunntekst."
+  description:
+    "Lag kanaltilpassede SoMe-forslag, lagre historikk og administrer delte prompts."
 };
 
 export default function RootLayout({
