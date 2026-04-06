@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ResultsSection } from "@/components/ResultsSection";
 import { StatusMessage } from "@/components/StatusMessage";
 import { isRewriteErrorResponse, validateClientText } from "@/lib/validation";
-import type { RewriteResult } from "@/types/rewrite";
+import type { RewriteField, RewriteResult } from "@/types/rewrite";
 
 export function RewriteForm() {
   const [text, setText] = useState("");
@@ -13,6 +13,8 @@ export function RewriteForm() {
   const [error, setError] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [activeRefreshField, setActiveRefreshField] = useState<RewriteField | null>(null);
+  const [previousValues, setPreviousValues] = useState<Partial<Record<RewriteField, string>>>({});
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -72,6 +74,82 @@ export function RewriteForm() {
     setResults(null);
     setError(null);
     setStatus(null);
+    setActiveRefreshField(null);
+    setPreviousValues({});
+  }
+
+  async function handleRegenerate(field: RewriteField) {
+    if (!results) {
+      return;
+    }
+
+    const validationError = validateClientText(text);
+
+    if (validationError) {
+      setError(validationError);
+      setStatus(null);
+      return;
+    }
+
+    setActiveRefreshField(field);
+    setError(null);
+    setStatus(null);
+
+    try {
+      const response = await fetch("/api/rewrite", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ text, target: field, results })
+      });
+
+      const data: unknown = await response.json();
+
+      if (!response.ok) {
+        if (isRewriteErrorResponse(data)) {
+          throw new Error(data.error);
+        }
+
+        throw new Error("Noe gikk galt. Prøv igjen.");
+      }
+
+      if (isRewriteErrorResponse(data)) {
+        throw new Error(data.error);
+      }
+
+      setPreviousValues((current) => ({
+        ...current,
+        [field]: results[field]
+      }));
+      setResults(data as RewriteResult);
+    } catch (refreshError) {
+      setError(
+        refreshError instanceof Error
+          ? refreshError.message
+          : "Kunne ikke lage nytt forslag akkurat nå. Prøv igjen."
+      );
+    } finally {
+      setActiveRefreshField(null);
+    }
+  }
+
+  function handleUndo(field: RewriteField) {
+    const previousValue = previousValues[field];
+
+    if (!results || previousValue === undefined) {
+      return;
+    }
+
+    setResults({
+      ...results,
+      [field]: previousValue
+    });
+    setPreviousValues((current) => {
+      const next = { ...current };
+      delete next[field];
+      return next;
+    });
   }
 
   return (
@@ -114,7 +192,13 @@ export function RewriteForm() {
         />
       ) : null}
 
-      <ResultsSection results={results} />
+      <ResultsSection
+        results={results}
+        activeRefreshField={activeRefreshField}
+        canUndo={(field) => previousValues[field] !== undefined}
+        onRegenerate={handleRegenerate}
+        onUndo={handleUndo}
+      />
     </div>
   );
 }

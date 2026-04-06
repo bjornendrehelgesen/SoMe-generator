@@ -1,3 +1,5 @@
+import type { RewriteField } from "@/types/rewrite";
+
 const SYSTEM_PROMPT = `Du er en erfaren norsk innholdsredaktør for Newton-rommet.
 
 Oppgave:
@@ -28,4 +30,36 @@ export function getSystemPrompt(): string {
 
 export function buildUserPrompt(text: string): string {
   return `Omformuler denne teksten til strukturert JSON etter reglene over:\n\n${text.trim()}`;
+}
+
+function getFieldInstruction(target: RewriteField): string {
+  if (target === "facebook") {
+    return "Lag kun et nytt Facebook-forslag. Det skal være litt lengre, engasjerende og folkelig.";
+  }
+
+  if (target === "instagram") {
+    return "Lag kun et nytt Instagram-forslag. Det skal være kortere, punchy og kan bruke noen få relevante emojis.";
+  }
+
+  if (target === "linkedin") {
+    return "Lag kun et nytt LinkedIn-forslag. Det skal være profesjonelt, tydelig og faglig.";
+  }
+
+  if (target === "imageText") {
+    return "Lag kun en ny kort tekst til bilde hvis det passer. Hvis det ikke passer, returner tom streng.";
+  }
+
+  return "Lag kun en ny kort og tydelig CTA hvis det passer. Hvis det ikke passer, returner tom streng.";
+}
+
+export function buildSingleFieldPrompt(text: string, target: RewriteField): string {
+  return [
+    `Omformuler denne teksten og lag en ny variant kun for feltet "${target}".`,
+    getFieldInstruction(target),
+    "Bevar fakta og hovedbudskap fra originalteksten.",
+    "Returner kun gyldig JSON på formen:",
+    `{ "${target}": "..." }`,
+    "",
+    text.trim()
+  ].join("\n");
 }

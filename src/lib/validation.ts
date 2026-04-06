@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { RewriteRequest, RewriteResult } from "@/types/rewrite";
+import type { RewriteField, RewriteRequest, RewriteResult } from "@/types/rewrite";
 
 const MAX_INPUT_LENGTH = 5000;
 
@@ -9,7 +9,10 @@ const rewriteRequestSchema = z.object({
     .string({ required_error: "Tekst mangler." })
     .trim()
     .min(1, "Skriv inn tekst før du lager forslag.")
-    .max(MAX_INPUT_LENGTH, `Teksten kan ikke være lengre enn ${MAX_INPUT_LENGTH} tegn.`)
+    .max(MAX_INPUT_LENGTH, `Teksten kan ikke være lengre enn ${MAX_INPUT_LENGTH} tegn.`),
+  target: z
+    .enum(["facebook", "instagram", "linkedin", "imageText", "cta"])
+    .optional()
 });
 
 const rewriteResultSchema = z.object({
@@ -44,6 +47,12 @@ export function normalizeRewriteResult(input: unknown): RewriteResult {
     imageText: parsed.imageText?.trim() ?? "",
     cta: parsed.cta?.trim() ?? ""
   };
+}
+
+export function isRewriteField(value: unknown): value is RewriteField {
+  return ["facebook", "instagram", "linkedin", "imageText", "cta"].includes(
+    String(value)
+  );
 }
 
 export function isRewriteErrorResponse(

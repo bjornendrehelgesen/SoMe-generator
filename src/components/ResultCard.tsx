@@ -1,14 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { RewriteField } from "@/types/rewrite";
 
 type ResultCardProps = {
   title: string;
   content: string;
   copyLabel: string;
   accent: number;
-  platform: "facebook" | "instagram" | "linkedin" | "imageText" | "cta";
+  platform: RewriteField;
   variant?: "default" | "compact";
+  isRefreshing: boolean;
+  showUndo: boolean;
+  onRegenerate: (field: RewriteField) => Promise<void>;
+  onUndo: (field: RewriteField) => void;
 };
 
 const accentStyles = [
@@ -25,7 +30,11 @@ export function ResultCard({
   copyLabel,
   accent,
   platform,
-  variant = "default"
+  variant = "default",
+  isRefreshing,
+  showUndo,
+  onRegenerate,
+  onUndo
 }: ResultCardProps) {
   const [copied, setCopied] = useState(false);
 
@@ -52,6 +61,10 @@ export function ResultCard({
     } catch {
       setCopied(false);
     }
+  }
+
+  async function handleRegenerate() {
+    await onRegenerate(platform);
   }
 
   const isCompact = variant === "compact";
@@ -119,11 +132,36 @@ export function ResultCard({
             </div>
           </div>
         </div>
-        <div className="shrink-0">
+        <div className="flex shrink-0 items-center gap-2">
+          {showUndo ? (
+            <button
+              type="button"
+              onClick={() => onUndo(platform)}
+              aria-label={`Angre nytt forslag for ${title}`}
+              className={`inline-flex items-center justify-center rounded-full border border-[#D1D3D4] bg-white/95 ${isCompact ? "h-9 w-9" : "h-10 w-10"} text-[#414042] shadow-sm transition hover:border-[#4382C3] hover:bg-white hover:text-[#002B56] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#4382C3]/20`}
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={isCompact ? "h-4 w-4" : "h-[18px] w-[18px]"}>
+                <path d="M9 7 5 11l4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M6 11h7a5 5 0 1 1 0 10h-1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          ) : null}
+          <button
+            type="button"
+            onClick={handleRegenerate}
+            disabled={isRefreshing}
+            aria-label={`Lag nytt forslag for ${title}`}
+            className={`inline-flex items-center justify-center rounded-full border border-[#D1D3D4] bg-white/95 ${isCompact ? "h-9 w-9" : "h-10 w-10"} text-[#414042] shadow-sm transition hover:border-[#4382C3] hover:bg-white hover:text-[#002B56] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#4382C3]/20 disabled:cursor-not-allowed disabled:opacity-50`}
+          >
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={`${isCompact ? "h-4 w-4" : "h-[18px] w-[18px]"} ${isRefreshing ? "animate-spin" : ""}`}>
+              <path d="M20 12a8 8 0 1 1-2.3-5.7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              <path d="M20 4v5h-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
           <button
             type="button"
             onClick={handleCopy}
-            disabled={!content}
+            disabled={!content || isRefreshing}
             aria-label={copyLabel}
             className={`rounded-full border border-[#D1D3D4] bg-white/95 ${isCompact ? "px-3 py-1.5 text-xs" : "px-3.5 py-2 text-sm"} font-medium text-[#414042] shadow-sm transition hover:border-[#4382C3] hover:bg-white hover:text-[#002B56] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#4382C3]/20 disabled:cursor-not-allowed disabled:opacity-50`}
           >

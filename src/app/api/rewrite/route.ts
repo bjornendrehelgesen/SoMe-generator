@@ -1,14 +1,22 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 
-import { generateRewriteSuggestions } from "@/lib/ai";
-import { validateRewriteRequest } from "@/lib/validation";
+import { generateRewriteSuggestions, regenerateRewriteField } from "@/lib/ai";
+import { normalizeRewriteResult, validateRewriteRequest } from "@/lib/validation";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { text } = validateRewriteRequest(body);
-    const result = await generateRewriteSuggestions(text);
+    const { text, target } = validateRewriteRequest(body);
+
+    if (!target) {
+      const result = await generateRewriteSuggestions(text);
+      return NextResponse.json(result);
+    }
+
+    const currentResults = normalizeRewriteResult(body.results);
+
+    const result = await regenerateRewriteField(text, target, currentResults);
 
     return NextResponse.json(result);
   } catch (error) {

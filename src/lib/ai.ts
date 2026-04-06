@@ -1,8 +1,8 @@
 import OpenAI from "openai";
 
-import { buildUserPrompt, getSystemPrompt } from "@/lib/prompt";
+import { buildSingleFieldPrompt, buildUserPrompt, getSystemPrompt } from "@/lib/prompt";
 import { normalizeRewriteResult } from "@/lib/validation";
-import type { RewriteResult } from "@/types/rewrite";
+import type { RewriteField, RewriteResult } from "@/types/rewrite";
 
 const MODEL = process.env.OPENAI_MODEL ?? "gpt-4.1-mini";
 
@@ -56,4 +56,50 @@ export async function generateRewriteSuggestions(text: string): Promise<RewriteR
   }
 
   return normalizeRewriteResult(extractJson(output));
+}
+
+export async function regenerateRewriteField(
+  text: string,
+  target: RewriteField,
+  currentResults: RewriteResult
+): Promise<RewriteResult> {
+  const client = getClient();
+
+  const response = await client.responses.create({
+    model: MODEL,
+    input: [
+      {
+        role: "system",
+        content: [{ type: "input_text", text: getSystemPrompt() }]
+      },
+      {
+        role: "user",
+        content: [{ type: "input_text", text: buildSingleFieldPrompt(text, target) }]
+      }
+    ]
+  });
+
+  const output = response.output_text;
+
+  if (!output) {
+    throw new Error("AI-tjenesten returnerte ikke noe innhold.");
+  }
+
+  const parsed = extractJson(output);
+
+  if (typeof parsed !== "object" || parsed === null || !(target in parsed)) {
+    throw new Error("AI-responsen manglet feltet som skulle regenereres.");
+  }
+
+  const parsedRecord = parsed as Record<string, unknown>;
+  const nextValue = parsedRecord[target];
+
+  if (typeof nextValue !== "string") {
+    throw new Error("AI-responsen hadde ugyldig format for regenerert felt.");
+  }
+
+  return {
+    ...currentResults,
+    [target]: nextValue.trim()
+  };
 }

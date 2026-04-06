@@ -1,6 +1,14 @@
 export type RewriteRequest = {
   text: string;
+  target?: RewriteField;
 };
+
+export type RewriteField =
+  | "facebook"
+  | "instagram"
+  | "linkedin"
+  | "imageText"
+  | "cta";
 
 export type RewriteResult = {
   facebook: string;

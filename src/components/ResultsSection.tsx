@@ -1,11 +1,21 @@
 import { ResultCard } from "@/components/ResultCard";
-import type { RewriteResult } from "@/types/rewrite";
+import type { RewriteField, RewriteResult } from "@/types/rewrite";
 
 type ResultsSectionProps = {
   results: RewriteResult | null;
+  activeRefreshField: RewriteField | null;
+  canUndo: (field: RewriteField) => boolean;
+  onRegenerate: (field: RewriteField) => Promise<void>;
+  onUndo: (field: RewriteField) => void;
 };
 
-export function ResultsSection({ results }: ResultsSectionProps) {
+export function ResultsSection({
+  results,
+  activeRefreshField,
+  canUndo,
+  onRegenerate,
+  onUndo
+}: ResultsSectionProps) {
   if (!results) {
     return null;
   }
@@ -57,6 +67,10 @@ export function ResultsSection({ results }: ResultsSectionProps) {
             copyLabel={card.copyLabel}
             accent={index}
             platform={card.platform}
+            isRefreshing={activeRefreshField === card.platform}
+            showUndo={canUndo(card.platform)}
+            onRegenerate={onRegenerate}
+            onUndo={onUndo}
           />
         ))}
       </div>
@@ -70,6 +84,10 @@ export function ResultsSection({ results }: ResultsSectionProps) {
             accent={index + 3}
             platform={card.platform}
             variant="compact"
+            isRefreshing={activeRefreshField === card.platform}
+            showUndo={canUndo(card.platform)}
+            onRegenerate={onRegenerate}
+            onUndo={onUndo}
           />
         ))}
       </div>
