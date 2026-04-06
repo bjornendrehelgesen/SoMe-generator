@@ -115,11 +115,15 @@ export function ResultCard({
     );
   }
 
+  const iconButtonSize = isCompact ? "h-9 w-9" : "h-10 w-10";
+  const iconSize = isCompact ? "h-4 w-4" : "h-[18px] w-[18px]";
+  const contentPadding = isCompact ? "min-h-20 p-3.5 leading-6" : "min-h-28 p-4 leading-7";
+
   return (
     <article
       className={`flex h-full flex-col rounded-[1.75rem] border bg-gradient-to-br ${isCompact ? "p-4" : "p-5"} shadow-[0_18px_42px_-30px_rgba(0,43,86,0.18)] transition duration-200 hover:-translate-y-1 hover:shadow-[0_24px_56px_-30px_rgba(0,43,86,0.24)] ${accentStyles[accent % accentStyles.length]}`}
     >
-      <div className={`flex items-start justify-between gap-4 ${isCompact ? "mb-2.5" : "mb-3"}`}>
+      <div className={`${isCompact ? "mb-2.5" : "mb-3"}`}>
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <div className={`flex ${isCompact ? "h-9 w-9" : "h-10 w-10"} shrink-0 items-center justify-center rounded-full border border-[#DCE7F0] bg-white/95 text-[#002B56] shadow-sm`}>
@@ -132,45 +136,57 @@ export function ResultCard({
             </div>
           </div>
         </div>
-        <div className="flex shrink-0 items-center gap-2">
-          {showUndo ? (
+      </div>
+      <div className={`${contentPadding} whitespace-pre-wrap rounded-[1.25rem] border border-[#EEF1F4] bg-white/98 text-sm text-[#414042] shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]`}>
+        {content || "Ingen tekst tilgjengelig."}
+      </div>
+      <div className={`mt-3 flex flex-wrap items-center gap-2 ${isCompact ? "justify-start" : "justify-end"}`}>
+        {showUndo ? (
+          <div className="group relative">
             <button
               type="button"
               onClick={() => onUndo(platform)}
               aria-label={`Angre nytt forslag for ${title}`}
-              className={`inline-flex items-center justify-center rounded-full border border-[#D1D3D4] bg-white/95 ${isCompact ? "h-9 w-9" : "h-10 w-10"} text-[#414042] shadow-sm transition hover:border-[#4382C3] hover:bg-white hover:text-[#002B56] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#4382C3]/20`}
+              title="Angre og gå tilbake til forrige forslag"
+              className={`inline-flex items-center justify-center rounded-full border border-[#D1D3D4] bg-white/95 ${iconButtonSize} text-[#414042] shadow-sm transition hover:border-[#4382C3] hover:bg-white hover:text-[#002B56] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#4382C3]/20`}
             >
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={isCompact ? "h-4 w-4" : "h-[18px] w-[18px]"}>
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={iconSize}>
                 <path d="M9 7 5 11l4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 <path d="M6 11h7a5 5 0 1 1 0 10h-1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
-          ) : null}
+            <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 hidden -translate-x-1/2 rounded-full bg-[#002B56] px-3 py-1 text-xs font-medium text-white shadow-lg whitespace-nowrap group-hover:block group-focus-within:block">
+              Angre og gå tilbake
+            </span>
+          </div>
+        ) : null}
+        <div className="group relative">
           <button
             type="button"
             onClick={handleRegenerate}
             disabled={isRefreshing}
             aria-label={`Lag nytt forslag for ${title}`}
-            className={`inline-flex items-center justify-center rounded-full border border-[#D1D3D4] bg-white/95 ${isCompact ? "h-9 w-9" : "h-10 w-10"} text-[#414042] shadow-sm transition hover:border-[#4382C3] hover:bg-white hover:text-[#002B56] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#4382C3]/20 disabled:cursor-not-allowed disabled:opacity-50`}
+            title="Lag et nytt forslag for dette kortet"
+            className={`inline-flex items-center justify-center rounded-full border border-[#D1D3D4] bg-white/95 ${iconButtonSize} text-[#414042] shadow-sm transition hover:border-[#4382C3] hover:bg-white hover:text-[#002B56] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#4382C3]/20 disabled:cursor-not-allowed disabled:opacity-50`}
           >
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={`${isCompact ? "h-4 w-4" : "h-[18px] w-[18px]"} ${isRefreshing ? "animate-spin" : ""}`}>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" className={`${iconSize} ${isRefreshing ? "animate-spin" : ""}`}>
               <path d="M20 12a8 8 0 1 1-2.3-5.7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
               <path d="M20 4v5h-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
-          <button
-            type="button"
-            onClick={handleCopy}
-            disabled={!content || isRefreshing}
-            aria-label={copyLabel}
-            className={`rounded-full border border-[#D1D3D4] bg-white/95 ${isCompact ? "px-3 py-1.5 text-xs" : "px-3.5 py-2 text-sm"} font-medium text-[#414042] shadow-sm transition hover:border-[#4382C3] hover:bg-white hover:text-[#002B56] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#4382C3]/20 disabled:cursor-not-allowed disabled:opacity-50`}
-          >
-            {copied ? "Kopiert" : "Kopier"}
-          </button>
+          <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 hidden -translate-x-1/2 rounded-full bg-[#002B56] px-3 py-1 text-xs font-medium text-white shadow-lg whitespace-nowrap group-hover:block group-focus-within:block">
+            Lag nytt forslag
+          </span>
         </div>
-      </div>
-      <div className={`${isCompact ? "min-h-20 p-3.5 leading-6" : "min-h-28 p-4 leading-7"} whitespace-pre-wrap rounded-[1.25rem] border border-[#EEF1F4] bg-white/98 text-sm text-[#414042] shadow-[inset_0_1px_1px_rgba(255,255,255,0.8)]`}>
-        {content || "Ingen tekst tilgjengelig."}
+        <button
+          type="button"
+          onClick={handleCopy}
+          disabled={!content || isRefreshing}
+          aria-label={copyLabel}
+          className={`rounded-full border border-[#D1D3D4] bg-white/95 ${isCompact ? "px-3 py-1.5 text-xs" : "px-3.5 py-2 text-sm"} font-medium text-[#414042] shadow-sm transition hover:border-[#4382C3] hover:bg-white hover:text-[#002B56] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#4382C3]/20 disabled:cursor-not-allowed disabled:opacity-50`}
+        >
+          {copied ? "Kopiert" : "Kopier"}
+        </button>
       </div>
     </article>
   );
